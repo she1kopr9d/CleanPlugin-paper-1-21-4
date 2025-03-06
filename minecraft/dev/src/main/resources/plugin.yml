@@ -1,0 +1,9 @@
+name: untitled1
+version: 'ну чисто приколы онлайн'
+main: com.example.untitled1.MainPlugin
+api-version: '1.21'
+commands:
+  artel:
+    description: Основная команда плагина
+    usage: /<artel>  <след. подкоманда>
+    aliases: [art, a]
