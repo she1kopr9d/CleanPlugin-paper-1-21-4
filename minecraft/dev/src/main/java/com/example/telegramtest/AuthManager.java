@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AuthManager {
     private final File dataFile;
     private final Map<String, Long> playerTelegramIds; // minecraft username -> telegram chat id
+    private final Map<Long, String> telegramPlayerIds; // telegram chat id -> minecraft username
     private final Map<UUID, Boolean> pendingAuth; // Ожидающие подтверждения
     private final Gson gson;
     private final MainPlugin plugin;
@@ -28,17 +29,40 @@ public class AuthManager {
         this.plugin = plugin;
         this.dataFile = new File(plugin.getDataFolder(), "auth_data.json");
         this.playerTelegramIds = new ConcurrentHashMap<>();
+        this.telegramPlayerIds = new ConcurrentHashMap<>();
         this.pendingAuth = new ConcurrentHashMap<>();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         loadData();
     }
 
     public void registerPlayer(String minecraftUsername, long telegramChatId) {
+        if (telegramPlayerIds.containsKey(telegramChatId)) {
+            throw new IllegalStateException("Этот Telegram аккаунт уже привязан к нику: " + 
+                telegramPlayerIds.get(telegramChatId));
+        }
+
         playerTelegramIds.put(minecraftUsername.toLowerCase(), telegramChatId);
+        telegramPlayerIds.put(telegramChatId, minecraftUsername.toLowerCase());
         Bukkit.getScheduler().runTask(plugin, () -> {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist add " + minecraftUsername);
         });
         saveData();
+    }
+
+    public void unregisterPlayer(long telegramChatId) {
+        String username = telegramPlayerIds.get(telegramChatId);
+        if (username != null) {
+            playerTelegramIds.remove(username);
+            telegramPlayerIds.remove(telegramChatId);
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist remove " + username);
+            });
+            saveData();
+        }
+    }
+
+    public String getMinecraftUsername(long telegramChatId) {
+        return telegramPlayerIds.get(telegramChatId);
     }
 
     public boolean isRegistered(String minecraftUsername) {

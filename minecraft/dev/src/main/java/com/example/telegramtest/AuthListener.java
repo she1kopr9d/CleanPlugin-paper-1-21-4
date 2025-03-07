@@ -50,6 +50,13 @@ public class AuthListener implements Listener {
         UUID playerUuid = player.getUniqueId();
 
         if (!authManager.isRegistered(playerName)) {
+            if (plugin.getConfig().getBoolean("show-registration-instructions", true)) {
+                String instructions = plugin.getConfig().getString("registration-instructions", "")
+                    .replace("{player}", playerName)
+                    .replace("{bot-link}", plugin.getConfig().getString("bot-link", ""))
+                    .replace("&", "§");
+                player.sendMessage(instructions);
+            }
             player.kick(Component.text("Вы не зарегистрированы! Используйте /reg в Telegram боте"));
             return;
         }

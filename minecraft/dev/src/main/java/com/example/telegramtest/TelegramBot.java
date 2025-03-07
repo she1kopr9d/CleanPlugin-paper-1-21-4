@@ -76,6 +76,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                 return;
             }
             
+            // Обработка команды /info
+            if (message.equals("/info")) {
+                handleInfo(chatId);
+                return;
+            }
+
+            // Обработка команды /unreg
+            if (message.equals("/unreg")) {
+                handleUnregistration(chatId);
+                return;
+            }
+
             // Обработка подтверждения входа
             if (message.equals("/confirm")) {
                 handleConfirmation(chatId);
@@ -203,14 +215,37 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void handleRegistration(long chatId, String minecraftUsername) {
-        if (authManager.isRegistered(minecraftUsername)) {
-            sendTelegramMessage(chatId, "❌ Этот аккаунт Minecraft уже зарегистрирован!");
-            return;
-        }
+        try {
+            if (authManager.isRegistered(minecraftUsername)) {
+                sendTelegramMessage(chatId, "❌ Этот аккаунт Minecraft уже зарегистрирован!");
+                return;
+            }
 
-        authManager.registerPlayer(minecraftUsername, chatId);
-        sendTelegramMessage(chatId, "✅ Регистрация успешна! Теперь вы можете войти на сервер.\n" +
-                "При входе вам придет запрос на подтверждение.");
+            authManager.registerPlayer(minecraftUsername, chatId);
+            sendTelegramMessage(chatId, "✅ Регистрация успешна! Теперь вы можете войти на сервер.\n" +
+                    "При входе вам придет запрос на подтверждение.");
+        } catch (IllegalStateException e) {
+            sendTelegramMessage(chatId, "❌ " + e.getMessage());
+        }
+    }
+
+    private void handleInfo(long chatId) {
+        String username = authManager.getMinecraftUsername(chatId);
+        if (username != null) {
+            sendTelegramMessage(chatId, "ℹ️ Ваш Telegram привязан к нику: " + username);
+        } else {
+            sendTelegramMessage(chatId, "❌ У вас нет привязанного аккаунта Minecraft");
+        }
+    }
+
+    private void handleUnregistration(long chatId) {
+        String username = authManager.getMinecraftUsername(chatId);
+        if (username != null) {
+            authManager.unregisterPlayer(chatId);
+            sendTelegramMessage(chatId, "✅ Аккаунт успешно отвязан");
+        } else {
+            sendTelegramMessage(chatId, "❌ У вас нет привязанного аккаунта");
+        }
     }
 
     private void handleConfirmation(long chatId) {
