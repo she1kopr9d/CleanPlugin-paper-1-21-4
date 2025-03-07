@@ -1,9 +1,5 @@
-name: untitled1
-version: 'ну чисто приколы онлайн'
-main: com.example.untitled1.MainPlugin
+name: TelegramTest
+version: 'Тестовый плагин'
+main: com.example.telegramtest.MainPlugin
 api-version: '1.21'
-commands:
-  artel:
-    description: Основная команда плагина
-    usage: /<artel>  <след. подкоманда>
-    aliases: [art, a]
+description: 'Интеграция Minecraft чата с Telegram'
