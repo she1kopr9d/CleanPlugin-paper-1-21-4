@@ -145,6 +145,10 @@ public class AuthManager {
             Map<String, Long> data = gson.fromJson(reader, type);
             if (data != null) {
                 playerTelegramIds.putAll(data);
+                // Также загружаем данные для telegramPlayerIds
+                for (Map.Entry<String, Long> entry : data.entrySet()) {
+                    telegramPlayerIds.put(entry.getValue(), entry.getKey());
+                }
             }
         } catch (IOException e) {
             plugin.getLogger().warning("Failed to load auth data: " + e.getMessage());
