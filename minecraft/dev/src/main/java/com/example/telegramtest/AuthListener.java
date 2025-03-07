@@ -49,6 +49,12 @@ public class AuthListener implements Listener {
         String playerName = player.getName();
         UUID playerUuid = player.getUniqueId();
 
+        // Проверяем сессию
+        String ip = player.getAddress().getAddress().getHostAddress();
+        if (authManager.isSessionValid(ip)) {
+            return; // Пропускаем авторизацию если сессия активна
+        }
+
         if (!authManager.isRegistered(playerName)) {
             if (plugin.getConfig().getBoolean("show-registration-instructions", true)) {
                 String instructions = plugin.getConfig().getString("registration-instructions", "")
@@ -76,9 +82,19 @@ public class AuthListener implements Listener {
         Long telegramId = authManager.getTelegramId(playerName);
         if (telegramId != null) {
             bot.sendTelegramMessage(telegramId, 
-                "⚠️ Обнаружен вход в игру!\n" +
-                "Отправьте /confirm для подтверждения входа\n" +
-                "У вас есть 60 секунд, иначе вы будете отключены");
+                String.format("""
+                    ⚠️ Обнаружен вход в игру!
+                    📍 IP-адрес: %s
+                    
+                    Если это вы:
+                    /confirm - подтвердить вход
+                    /cancel - отменить вход
+                    
+                    Если это не вы:
+                    /block - заблокировать IP-адрес
+                    
+                    ⏰ У вас есть 60 секунд на ответ
+                    """, ip));
         }
 
         // Запускаем таймер на кик

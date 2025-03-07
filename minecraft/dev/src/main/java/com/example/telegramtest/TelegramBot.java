@@ -106,6 +106,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                 return;
             }
 
+            // Обработка блокировки
+            if (message.equals("/block")) {
+                handleBlock(chatId);
+                return;
+            }
+
+            // Обработка отмены
+            if (message.equals("/cancel")) {
+                handleCancel(chatId);
+                return;
+            }
+
             // Обычное сообщение
             // Отправляем сообщение в игру асинхронно
             Bukkit.getScheduler().runTask(plugin, () -> {
@@ -268,7 +280,45 @@ public class TelegramBot extends TelegramLongPollingBot {
                 
                 if (registeredChatId != null && registeredChatId == chatId) {
                     authManager.confirmAuth(player.getUniqueId());
+                    String ip = player.getAddress().getAddress().getHostAddress();
+                    authManager.createSession(ip);
                     sendTelegramMessage(chatId, "✅ Вход подтвержден!");
+                    return;
+                }
+            }
+            sendTelegramMessage(chatId, "❌ Нет ожидающих подтверждения входов для вашего аккаунта");
+        });
+    }
+
+    private void handleBlock(long chatId) {
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                String playerName = player.getName();
+                Long registeredChatId = authManager.getTelegramId(playerName);
+                
+                if (registeredChatId != null && registeredChatId == chatId) {
+                    String ip = player.getAddress().getAddress().getHostAddress();
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban-ip " + ip + " Подозрительный вход");
+                    player.kick(Component.text("Вход заблокирован владельцем аккаунта"));
+                    authManager.invalidateSession(ip);
+                    sendTelegramMessage(chatId, "🚫 IP-адрес заблокирован: " + ip);
+                    return;
+                }
+            }
+            sendTelegramMessage(chatId, "❌ Нет ожидающих подтверждения входов для вашего аккаунта");
+        });
+    }
+
+    private void handleCancel(long chatId) {
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                String playerName = player.getName();
+                Long registeredChatId = authManager.getTelegramId(playerName);
+                
+                if (registeredChatId != null && registeredChatId == chatId) {
+                    player.kick(Component.text("Вход отменен"));
+                    authManager.removeAuthStatus(player.getUniqueId());
+                    sendTelegramMessage(chatId, "❌ Вход отменен");
                     return;
                 }
             }
@@ -278,7 +328,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void handleStart(long chatId) {
         String welcomeMessage = """
-            �� Добро пожаловать в бот авторизации Minecraft!
+             Добро пожаловать в бот авторизации Minecraft!
             
             🔐 Этот бот используется для:
             • Привязки аккаунта Minecraft к Telegram

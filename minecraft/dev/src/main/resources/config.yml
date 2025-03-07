@@ -5,6 +5,8 @@ bot-username: "Bot"
 show-registration-instructions: false
 # Ссылка на бота
 bot-link: "https://t.me/shelldev_template_test_bot"
+# Время действия сессии в минутах (0 - отключить)
+session-duration: 30
 # Текст инструкции
 registration-instructions: |
   &6=== Инструкция по регистрации ===

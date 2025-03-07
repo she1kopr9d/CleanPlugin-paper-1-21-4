@@ -22,8 +22,11 @@ public class AuthManager {
     private final Map<String, Long> playerTelegramIds; // minecraft username -> telegram chat id
     private final Map<Long, String> telegramPlayerIds; // telegram chat id -> minecraft username
     private final Map<UUID, Boolean> pendingAuth; // Ожидающие подтверждения
+    private final Map<String, Long> ipSessions; // ip -> expiry time
     private final Gson gson;
     private final MainPlugin plugin;
+
+    private final long sessionDuration;
 
     public AuthManager(MainPlugin plugin) {
         this.plugin = plugin;
@@ -31,7 +34,9 @@ public class AuthManager {
         this.playerTelegramIds = new ConcurrentHashMap<>();
         this.telegramPlayerIds = new ConcurrentHashMap<>();
         this.pendingAuth = new ConcurrentHashMap<>();
+        this.ipSessions = new ConcurrentHashMap<>();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.sessionDuration = plugin.getConfig().getLong("session-duration", 30) * 60 * 1000; // конвертируем минуты в миллисекунды
         loadData();
     }
 
@@ -96,6 +101,22 @@ public class AuthManager {
 
     public void removeAuthStatus(UUID playerUuid) {
         pendingAuth.remove(playerUuid);
+    }
+
+    public boolean isSessionValid(String ip) {
+        if (sessionDuration == 0) return false; // если сессии отключены
+        Long expiry = ipSessions.get(ip);
+        return expiry != null && expiry > System.currentTimeMillis();
+    }
+
+    public void createSession(String ip) {
+        if (sessionDuration > 0) {
+            ipSessions.put(ip, System.currentTimeMillis() + sessionDuration);
+        }
+    }
+
+    public void invalidateSession(String ip) {
+        ipSessions.remove(ip);
     }
 
     private void loadData() {
