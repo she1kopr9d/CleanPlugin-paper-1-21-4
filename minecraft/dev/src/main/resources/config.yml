@@ -2,7 +2,7 @@
 bot-token: "6468385890:AAHtdGJsUniBR5EfJ-GczhouFiY_nVsvxGQ"
 bot-username: "Bot"
 # Показывать ли инструкцию при входе незарегистрированным игрокам
-show-registration-instructions: true
+show-registration-instructions: false
 # Ссылка на бота
 bot-link: "https://t.me/shelldev_template_test_bot"
 # Текст инструкции

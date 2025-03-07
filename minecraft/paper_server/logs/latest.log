@@ -1,66 +1,60 @@
-[16:37:50] [ServerMain/INFO]: [bootstrap] Running Java 21 (OpenJDK 64-Bit Server VM 21.0.6; Homebrew Homebrew) on Mac OS X 15.2 (aarch64)
-[16:37:50] [ServerMain/INFO]: [bootstrap] Loading Paper 1.21.4-190-main@5538d24 (2025-03-05T12:40:02Z) for Minecraft 1.21.4
-[16:37:51] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
-[16:37:51] [ServerMain/INFO]: [PluginInitializerManager] Initialized 1 plugin
-[16:37:51] [ServerMain/INFO]: [PluginInitializerManager] Bukkit plugins (1):
+[16:43:34] [ServerMain/INFO]: [bootstrap] Running Java 21 (OpenJDK 64-Bit Server VM 21.0.6; Homebrew Homebrew) on Mac OS X 15.2 (aarch64)
+[16:43:34] [ServerMain/INFO]: [bootstrap] Loading Paper 1.21.4-190-main@5538d24 (2025-03-05T12:40:02Z) for Minecraft 1.21.4
+[16:43:35] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
+[16:43:35] [Paper Plugin Remapper Thread - 2/INFO]: [PluginRemapper] Remapping plugin 'plugins/paper-plugin-1.0-SNAPSHOT.jar'...
+[16:43:38] [Paper Plugin Remapper Thread - 2/INFO]: [PluginRemapper] Done remapping plugin 'plugins/paper-plugin-1.0-SNAPSHOT.jar' in 2851ms.
+[16:43:38] [ServerMain/INFO]: [PluginInitializerManager] Initialized 1 plugin
+[16:43:38] [ServerMain/INFO]: [PluginInitializerManager] Bukkit plugins (1):
  - TelegramTest (Тестовый плагин)
-[16:37:54] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
-[16:37:56] [ServerMain/INFO]: Loaded 1370 recipes
-[16:37:56] [ServerMain/INFO]: Loaded 1481 advancements
-[16:37:56] [ServerMain/INFO]: [MCTypeRegistry] Initialising converters for DataConverter...
-[16:37:56] [ServerMain/INFO]: [MCTypeRegistry] Finished initialising converters for DataConverter in 148,3ms
-[16:37:56] [Server thread/INFO]: Starting minecraft server version 1.21.4
-[16:37:56] [Server thread/INFO]: Loading properties
-[16:37:56] [Server thread/INFO]: This server is running Paper version 1.21.4-190-main@5538d24 (2025-03-05T12:40:02Z) (Implementing API version 1.21.4-R0.1-SNAPSHOT)
-[16:37:56] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
-[16:37:56] [Server thread/INFO]: Server Ping Player Sample Count: 12
-[16:37:56] [Server thread/INFO]: Using 4 threads for Netty based IO
-[16:37:57] [Server thread/INFO]: [MoonriseCommon] Paper is using 2 worker threads, 1 I/O threads
-[16:37:57] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
-[16:37:57] [Server thread/INFO]: Default game type: SURVIVAL
-[16:37:57] [Server thread/INFO]: Generating keypair
-[16:37:57] [Server thread/INFO]: Starting Minecraft server on *:25565
-[16:37:57] [Server thread/INFO]: Using default channel type
-[16:37:57] [Server thread/INFO]: Paper: Using libdeflate (macOS ARM64 / Apple Silicon) compression from Velocity.
-[16:37:57] [Server thread/INFO]: Paper: Using native (macOS ARM64 / Apple Silicon) cipher from Velocity.
-[16:37:58] [Server thread/INFO]: [TelegramTest] Loading server plugin TelegramTest vТестовый плагин
-[16:37:58] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
-[16:37:58] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
-[16:37:58] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
-[16:37:58] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
-[16:37:58] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
-[16:37:58] [Server thread/INFO]: Preparing level "world"
-[16:37:58] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
-[16:37:58] [Server thread/INFO]: Preparing spawn area: 0%
-[16:37:59] [Server thread/INFO]: Preparing spawn area: 2%
-[16:37:59] [Server thread/INFO]: Time elapsed: 694 ms
-[16:37:59] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
-[16:37:59] [Server thread/INFO]: Preparing spawn area: 0%
-[16:37:59] [Server thread/INFO]: Time elapsed: 87 ms
-[16:37:59] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
-[16:37:59] [Server thread/INFO]: Preparing spawn area: 0%
-[16:37:59] [Server thread/INFO]: Time elapsed: 59 ms
-[16:37:59] [Server thread/INFO]: [TelegramTest] Enabling TelegramTest vТестовый плагин
-[16:38:00] [Server thread/INFO]: [TelegramTest] Telegram bot successfully started!
-[16:38:00] [Server thread/INFO]: [TelegramTest] Plugin has been enabled!
-[16:38:00] [Server thread/INFO]: [spark] Starting background profiler...
-[16:38:01] [Server thread/INFO]: Done preparing level "world" (3.781s)
-[16:38:01] [Server thread/INFO]: Running delayed init tasks
-[16:38:01] [Server thread/INFO]: Done (12.601s)! For help, type "help"
-[16:38:03] [User Authenticator #0/INFO]: UUID of player she1kopr9d is 6ce0cfc1-fec8-3d36-a4a3-5a1dc1bfcc97
-[16:38:04] [Server thread/INFO]: she1kopr9d lost connection: Вы не зарегистрированы! Используйте /reg в Telegram боте
-[16:38:04] [Server thread/INFO]: she1kopr9d left the game
-[16:38:13] [User Authenticator #0/INFO]: UUID of player she1kopr9d is 6ce0cfc1-fec8-3d36-a4a3-5a1dc1bfcc97
-[16:38:14] [Server thread/INFO]: she1kopr9d lost connection: Вы не зарегистрированы! Используйте /reg в Telegram боте
-[16:38:14] [Server thread/INFO]: she1kopr9d left the game
-[16:38:22] [Server thread/INFO]: Player is already whitelisted
-[16:38:25] [User Authenticator #0/INFO]: UUID of player she1kopr9d is 6ce0cfc1-fec8-3d36-a4a3-5a1dc1bfcc97
-[16:38:26] [Server thread/INFO]: she1kopr9d joined the game
-[16:38:26] [Server thread/INFO]: she1kopr9d[/127.0.0.1:61141] logged in with entity id 37 at ([world]357.1645502860772, 118.0, -176.65711626036324)
-[16:38:57] [Server thread/INFO]: she1kopr9d lost connection: Disconnected
-[16:38:57] [Server thread/INFO]: she1kopr9d left the game
-[16:39:12] [User Authenticator #0/INFO]: UUID of player she1kopr9d is 6ce0cfc1-fec8-3d36-a4a3-5a1dc1bfcc97
-[16:39:13] [Server thread/INFO]: she1kopr9d joined the game
-[16:39:13] [Server thread/INFO]: she1kopr9d[/127.0.0.1:61189] logged in with entity id 290 at ([world]345.69999998807907, 125.0, -120.30000001192093)
-[16:39:25] [Server thread/INFO]: she1kopr9d lost connection: Disconnected
-[16:39:25] [Server thread/INFO]: she1kopr9d left the game
+[16:43:41] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[16:43:42] [ServerMain/INFO]: Loaded 1370 recipes
+[16:43:42] [ServerMain/INFO]: Loaded 1481 advancements
+[16:43:42] [ServerMain/INFO]: [MCTypeRegistry] Initialising converters for DataConverter...
+[16:43:42] [ServerMain/INFO]: [MCTypeRegistry] Finished initialising converters for DataConverter in 141,0ms
+[16:43:42] [Server thread/INFO]: Starting minecraft server version 1.21.4
+[16:43:42] [Server thread/INFO]: Loading properties
+[16:43:43] [Server thread/INFO]: This server is running Paper version 1.21.4-190-main@5538d24 (2025-03-05T12:40:02Z) (Implementing API version 1.21.4-R0.1-SNAPSHOT)
+[16:43:43] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[16:43:43] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[16:43:43] [Server thread/INFO]: Using 4 threads for Netty based IO
+[16:43:43] [Server thread/INFO]: [MoonriseCommon] Paper is using 2 worker threads, 1 I/O threads
+[16:43:43] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
+[16:43:43] [Server thread/INFO]: Default game type: SURVIVAL
+[16:43:43] [Server thread/INFO]: Generating keypair
+[16:43:43] [Server thread/INFO]: Starting Minecraft server on *:25565
+[16:43:43] [Server thread/INFO]: Using default channel type
+[16:43:44] [Server thread/INFO]: Paper: Using libdeflate (macOS ARM64 / Apple Silicon) compression from Velocity.
+[16:43:44] [Server thread/INFO]: Paper: Using native (macOS ARM64 / Apple Silicon) cipher from Velocity.
+[16:43:44] [Server thread/INFO]: [TelegramTest] Loading server plugin TelegramTest vТестовый плагин
+[16:43:44] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[16:43:44] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[16:43:44] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[16:43:44] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[16:43:44] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[16:43:44] [Server thread/INFO]: Preparing level "world"
+[16:43:44] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[16:43:45] [Server thread/INFO]: Preparing spawn area: 0%
+[16:43:45] [Server thread/INFO]: Preparing spawn area: 2%
+[16:43:45] [Server thread/INFO]: Time elapsed: 732 ms
+[16:43:45] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
+[16:43:45] [Server thread/INFO]: Preparing spawn area: 0%
+[16:43:45] [Server thread/INFO]: Time elapsed: 95 ms
+[16:43:45] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
+[16:43:45] [Server thread/INFO]: Preparing spawn area: 0%
+[16:43:45] [Server thread/INFO]: Time elapsed: 65 ms
+[16:43:45] [Server thread/INFO]: [TelegramTest] Enabling TelegramTest vТестовый плагин
+[16:43:46] [Server thread/INFO]: [TelegramTest] Telegram bot successfully started!
+[16:43:46] [Server thread/INFO]: [TelegramTest] Plugin has been enabled!
+[16:43:46] [Server thread/INFO]: [spark] Starting background profiler...
+[16:43:47] [Server thread/INFO]: Done preparing level "world" (3.451s)
+[16:43:47] [Server thread/INFO]: Running delayed init tasks
+[16:43:47] [Server thread/INFO]: Done (14.219s)! For help, type "help"
+[16:43:58] [User Authenticator #0/INFO]: UUID of player she1kopr9d is 6ce0cfc1-fec8-3d36-a4a3-5a1dc1bfcc97
+[16:43:59] [Server thread/INFO]: she1kopr9d lost connection: Вы не зарегистрированы! Используйте /reg в Telegram боте
+[16:43:59] [Server thread/INFO]: she1kopr9d left the game
+[16:44:25] [Server thread/INFO]: Added she1kopr9d to the whitelist
+[16:44:34] [User Authenticator #0/INFO]: UUID of player she1kopr9d is 6ce0cfc1-fec8-3d36-a4a3-5a1dc1bfcc97
+[16:44:35] [Server thread/INFO]: she1kopr9d joined the game
+[16:44:35] [Server thread/INFO]: she1kopr9d[/127.0.0.1:61713] logged in with entity id 32 at ([world]345.69999998807907, 125.0, -120.30000001192093)
+[16:44:44] [Server thread/INFO]: she1kopr9d lost connection: Disconnected
+[16:44:44] [Server thread/INFO]: she1kopr9d left the game
