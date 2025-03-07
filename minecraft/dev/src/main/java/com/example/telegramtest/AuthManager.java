@@ -4,6 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
+import java.time.Duration;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -50,6 +55,15 @@ public class AuthManager {
 
     public void confirmAuth(UUID playerUuid) {
         pendingAuth.put(playerUuid, true);
+        // Уведомляем игрока о успешной авторизации
+        Player player = Bukkit.getPlayer(playerUuid);
+        if (player != null) {
+            player.showTitle(Title.title(
+                Component.text("Вход подтвержден!", NamedTextColor.GREEN),
+                Component.text("Приятной игры!", NamedTextColor.YELLOW),
+                Title.Times.times(Duration.ofMillis(500), Duration.ofMillis(1500), Duration.ofMillis(500))
+            ));
+        }
     }
 
     public boolean isAuthConfirmed(UUID playerUuid) {
