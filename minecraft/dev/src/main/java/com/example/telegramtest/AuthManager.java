@@ -23,6 +23,7 @@ public class AuthManager {
     private final Map<Long, String> telegramPlayerIds; // telegram chat id -> minecraft username
     private final Map<UUID, Boolean> pendingAuth; // Ожидающие подтверждения
     private final Map<String, Long> ipSessions; // ip -> expiry time
+    private final Map<Long, String> lastBannedIps; // telegram id -> last banned ip
     private final Gson gson;
     private final MainPlugin plugin;
 
@@ -35,6 +36,7 @@ public class AuthManager {
         this.telegramPlayerIds = new ConcurrentHashMap<>();
         this.pendingAuth = new ConcurrentHashMap<>();
         this.ipSessions = new ConcurrentHashMap<>();
+        this.lastBannedIps = new ConcurrentHashMap<>();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.sessionDuration = plugin.getConfig().getLong("session-duration", 30) * 60 * 1000; // конвертируем минуты в миллисекунды
         loadData();
@@ -117,6 +119,18 @@ public class AuthManager {
 
     public void invalidateSession(String ip) {
         ipSessions.remove(ip);
+    }
+
+    public void saveBannedIp(long telegramId, String ip) {
+        lastBannedIps.put(telegramId, ip);
+    }
+
+    public String getLastBannedIp(long telegramId) {
+        return lastBannedIps.get(telegramId);
+    }
+
+    public void clearLastBannedIp(long telegramId) {
+        lastBannedIps.remove(telegramId);
     }
 
     private void loadData() {

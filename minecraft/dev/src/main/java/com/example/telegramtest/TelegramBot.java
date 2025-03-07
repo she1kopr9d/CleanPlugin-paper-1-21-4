@@ -113,8 +113,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
 
             // Обработка отмены
-            if (message.equals("/cancel")) {
-                handleCancel(chatId);
+            if (message.equals("/unban")) {
+                handleUnban(chatId);
                 return;
             }
 
@@ -301,7 +301,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban-ip " + ip + " Подозрительный вход");
                     player.kick(Component.text("Вход заблокирован владельцем аккаунта"));
                     authManager.invalidateSession(ip);
-                    sendTelegramMessage(chatId, "🚫 IP-адрес заблокирован: " + ip);
+                    authManager.saveBannedIp(chatId, ip);
+                    sendTelegramMessage(chatId, "🚫 IP-адрес заблокирован: " + ip + "\n" +
+                            "Используйте /unban для отмены, если это ошибка");
                     return;
                 }
             }
@@ -309,21 +311,17 @@ public class TelegramBot extends TelegramLongPollingBot {
         });
     }
 
-    private void handleCancel(long chatId) {
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                String playerName = player.getName();
-                Long registeredChatId = authManager.getTelegramId(playerName);
-                
-                if (registeredChatId != null && registeredChatId == chatId) {
-                    player.kick(Component.text("Вход отменен"));
-                    authManager.removeAuthStatus(player.getUniqueId());
-                    sendTelegramMessage(chatId, "❌ Вход отменен");
-                    return;
-                }
-            }
-            sendTelegramMessage(chatId, "❌ Нет ожидающих подтверждения входов для вашего аккаунта");
-        });
+    private void handleUnban(long chatId) {
+        String lastBannedIp = authManager.getLastBannedIp(chatId);
+        if (lastBannedIp != null) {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pardon-ip " + lastBannedIp);
+                authManager.clearLastBannedIp(chatId);
+                sendTelegramMessage(chatId, "✅ Бан IP-адреса " + lastBannedIp + " снят");
+            });
+        } else {
+            sendTelegramMessage(chatId, "❌ Нет недавно заблокированных IP-адресов");
+        }
     }
 
     private void handleStart(long chatId) {
@@ -353,6 +351,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             /unreg - отвязать аккаунт
             /info - информация о привязанном аккаунте
             /confirm - подтвердить вход на сервер
+            /unban - отменить последнюю блокировку IP
             
             🛠️ Управление сервером (только для админов):
             /exec <команда> - выполнить команду на сервере
