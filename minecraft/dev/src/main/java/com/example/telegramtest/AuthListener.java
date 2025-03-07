@@ -119,7 +119,7 @@ public class AuthListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (!authManager.isAuthConfirmed(player.getUniqueId())) {
+        if (!authManager.isAuthConfirmed(player.getUniqueId()) && !authManager.isSessionValid(player.getAddress().getAddress().getHostAddress())) {
             Location from = event.getFrom();
             Location to = event.getTo();
             // Разрешаем только поворот головы
@@ -131,7 +131,7 @@ public class AuthListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId())) {
+        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId()) && !authManager.isSessionValid(event.getPlayer().getAddress().getAddress().getHostAddress())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Component.text("⛔ Сначала подтвердите вход!", NamedTextColor.RED));
         }
@@ -141,7 +141,7 @@ public class AuthListener implements Listener {
     public void onInventoryOpen(InventoryOpenEvent event) {
         if (event.getPlayer() instanceof Player) {
             Player player = (Player) event.getPlayer();
-            if (!authManager.isAuthConfirmed(player.getUniqueId())) {
+            if (!authManager.isAuthConfirmed(player.getUniqueId()) && !authManager.isSessionValid(player.getAddress().getAddress().getHostAddress())) {
                 event.setCancelled(true);
             }
         }
@@ -149,28 +149,28 @@ public class AuthListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onItemDrop(PlayerDropItemEvent event) {
-        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId())) {
+        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId()) && !authManager.isSessionValid(event.getPlayer().getAddress().getAddress().getHostAddress())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId())) {
+        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId()) && !authManager.isSessionValid(event.getPlayer().getAddress().getAddress().getHostAddress())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId())) {
+        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId()) && !authManager.isSessionValid(event.getPlayer().getAddress().getAddress().getHostAddress())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId())) {
+        if (!authManager.isAuthConfirmed(event.getPlayer().getUniqueId()) && !authManager.isSessionValid(event.getPlayer().getAddress().getAddress().getHostAddress())) {
             event.setCancelled(true);
         }
     }
