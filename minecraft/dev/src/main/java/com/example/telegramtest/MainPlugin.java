@@ -7,13 +7,14 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 public class MainPlugin extends JavaPlugin {
     private TelegramBot telegramBot;
+    private AuthManager authManager;
 
     @Override
     public void onEnable() {
-        // Сохраняем конфиг по умолчанию, если его нет
-        saveDefaultConfig();
+        // Инициализируем менеджер авторизации
+        authManager = new AuthManager(this);
         
-        // Получаем данные для бота из конфига
+        // Создаем и регистрируем бота
         String botToken = getConfig().getString("bot-token");
         String botUsername = getConfig().getString("bot-username");
         
@@ -23,9 +24,16 @@ public class MainPlugin extends JavaPlugin {
             return;
         }
 
+        telegramBot = new TelegramBot(this, botToken, botUsername);
+        
+        // Регистрируем слушатель
+        getServer().getPluginManager().registerEvents(
+            new AuthListener(this, authManager, telegramBot), 
+            this
+        );
+
         // Инициализируем и запускаем бота
         try {
-            telegramBot = new TelegramBot(this, botToken, botUsername);
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(telegramBot);
             getLogger().info("Telegram bot successfully started!");
@@ -42,5 +50,9 @@ public class MainPlugin extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         getLogger().info("Plugin has been disabled!");
+    }
+
+    public AuthManager getAuthManager() {
+        return authManager;
     }
 }

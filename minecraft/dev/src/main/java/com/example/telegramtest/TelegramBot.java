@@ -23,11 +23,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final MainPlugin plugin;
     private final String botToken;
     private final String botUsername;
+    private final AuthManager authManager;
 
     public TelegramBot(MainPlugin plugin, String botToken, String botUsername) {
         this.plugin = plugin;
         this.botToken = botToken;
         this.botUsername = botUsername;
+        this.authManager = plugin.getAuthManager();
     }
 
     @Override
@@ -64,6 +66,19 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (message.startsWith("/inv ")) {
                 String playerName = message.substring(5).trim();
                 handleInventoryCommand(chatId, playerName);
+                return;
+            }
+
+            // Обработка команды /reg
+            if (message.startsWith("/reg ")) {
+                String minecraftUsername = message.substring(5).trim();
+                handleRegistration(chatId, minecraftUsername);
+                return;
+            }
+            
+            // Обработка подтверждения входа
+            if (message.equals("/confirm")) {
+                handleConfirmation(chatId);
                 return;
             }
 
@@ -175,7 +190,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         return item.getType().toString().toLowerCase().replace('_', ' ');
     }
 
-    private void sendTelegramMessage(long chatId, String text) {
+    public void sendTelegramMessage(long chatId, String text) {
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);
@@ -185,5 +200,32 @@ public class TelegramBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             plugin.getLogger().warning("Failed to send Telegram message: " + e.getMessage());
         }
+    }
+
+    private void handleRegistration(long chatId, String minecraftUsername) {
+        if (authManager.isRegistered(minecraftUsername)) {
+            sendTelegramMessage(chatId, "❌ Этот аккаунт Minecraft уже зарегистрирован!");
+            return;
+        }
+
+        authManager.registerPlayer(minecraftUsername, chatId);
+        sendTelegramMessage(chatId, "✅ Регистрация успешна! Теперь вы можете войти на сервер.\n" +
+                "При входе вам придет запрос на подтверждение.");
+    }
+
+    private void handleConfirmation(long chatId) {
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                String playerName = player.getName();
+                Long registeredChatId = authManager.getTelegramId(playerName);
+                
+                if (registeredChatId != null && registeredChatId == chatId) {
+                    authManager.confirmAuth(player.getUniqueId());
+                    sendTelegramMessage(chatId, "✅ Вход подтвержден!");
+                    return;
+                }
+            }
+            sendTelegramMessage(chatId, "❌ Нет ожидающих подтверждения входов для вашего аккаунта");
+        });
     }
 } 
