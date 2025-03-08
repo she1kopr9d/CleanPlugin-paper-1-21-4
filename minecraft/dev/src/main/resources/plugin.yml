@@ -1,5 +1,0 @@
-name: TelegramTest
-version: 'Тестовый плагин'
-main: com.example.telegramtest.MainPlugin
-api-version: '1.21'
-description: 'Интеграция Minecraft чата с Telegram'
