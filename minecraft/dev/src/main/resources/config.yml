@@ -15,3 +15,11 @@ registration-instructions: |
   &e2. Отправьте команду: /reg {player}
   &e3. После регистрации вы сможете войти на сервер
   &6==============================
+
+kick-timeout-message: "Время подтверждения входа истекло!"
+waiting-confirmation-message: "Ожидание подтверждения входа..."
+confirmation-timeout: 60 # Time in seconds for confirmation
+title-display-time: 
+  fade-in: 500 # milliseconds
+  stay: 3000 # milliseconds
+  fade-out: 500 # milliseconds

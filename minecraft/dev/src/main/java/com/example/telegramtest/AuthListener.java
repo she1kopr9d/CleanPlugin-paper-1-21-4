@@ -23,6 +23,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class AuthListener implements Listener {
     private final MainPlugin plugin;
@@ -31,16 +32,19 @@ public class AuthListener implements Listener {
     private final Map<UUID, Location> joinLocations = new HashMap<>();
     private final Map<UUID, BukkitTask> kickTasks = new HashMap<>();
 
-    private final Title.Times TITLE_TIMES = Title.Times.times(
-        Duration.ofMillis(500),
-        Duration.ofMillis(3000),
-        Duration.ofMillis(500)
-    );
+    private final Title.Times TITLE_TIMES;
 
     public AuthListener(MainPlugin plugin, AuthManager authManager, TelegramBot bot) {
         this.plugin = plugin;
         this.authManager = authManager;
         this.bot = bot;
+
+        // Load configuration
+        FileConfiguration config = plugin.getConfig();
+        long fadeIn = config.getLong("title-display-time.fade-in");
+        long stay = config.getLong("title-display-time.stay");
+        long fadeOut = config.getLong("title-display-time.fade-out");
+        TITLE_TIMES = Title.Times.times(Duration.ofMillis(fadeIn), Duration.ofMillis(stay), Duration.ofMillis(fadeOut));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -63,7 +67,7 @@ public class AuthListener implements Listener {
                     .replace("&", "§");
                 player.sendMessage(instructions);
             }
-            player.kick(Component.text("Вы не зарегистрированы! Используйте /reg в Telegram боте"));
+            player.kick(Component.text(plugin.getConfig().getString("kick-timeout-message")));
             return;
         }
 
@@ -93,27 +97,27 @@ public class AuthListener implements Listener {
                     Если это не вы:
                     /block - заблокировать IP-адрес
                     
-                    ⏰ У вас есть 60 секунд на ответ
-                    """, ip));
+                    ⏰ У вас есть %d секунд на ответ
+                    """, ip, plugin.getConfig().getInt("confirmation-timeout")));
         }
 
         // Запускаем таймер на кик
         BukkitTask kickTask = plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
             if (!authManager.isAuthConfirmed(playerUuid)) {
-                player.kick(Component.text("Время подтверждения входа истекло!"));
+                player.kick(Component.text(plugin.getConfig().getString("kick-timeout-message")));
                 authManager.removeAuthStatus(playerUuid);
                 joinLocations.remove(playerUuid);
             }
-        }, 20 * 60); // 60 секунд
+        }, 20 * plugin.getConfig().getInt("confirmation-timeout")); // Use configurable timeout
 
         kickTasks.put(playerUuid, kickTask);
 
         // Запускаем таймер для повторяющихся сообщений
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             if (!authManager.isAuthConfirmed(playerUuid) && player.isOnline()) {
-                player.sendActionBar(Component.text("Ожидание подтверждения входа...", NamedTextColor.RED));
+                player.sendActionBar(Component.text(plugin.getConfig().getString("waiting-confirmation-message"), NamedTextColor.RED));
             }
-        }, 0L, 20L); // Каждую секунду
+        }, 0L, 20L); // Every second
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
